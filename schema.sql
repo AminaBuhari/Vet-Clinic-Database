@@ -10,6 +10,18 @@ CREATE TABLE Animals (
     PRIMARY KEY(id)
 )
 
- ALter table Animals ADD species TEXT NOT NULL;
+ALter table Animals ADD species TEXT NOT NULL;
+
+CREATE TABLE owners (
+    id            SERIAL PRIMARY KEY,
+    full_name TEXT NOT NULL;
+    age INT NOT NULL; 
+)
+
+CREATE TABLE species (
+    id        SERIAL PRIMARY KEY,
+   name TEXT NOT NULL; 
+)
+
 
  
