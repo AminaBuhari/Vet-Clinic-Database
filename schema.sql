@@ -10,4 +10,6 @@ CREATE TABLE animals (
     PRIMARY KEY(id)
 );
 
+ ALter table animals ADD species TEXT NOT NULL;
+
  
