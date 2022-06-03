@@ -10,6 +10,11 @@ SELECT * FROM Animals WHERE  NOT name='Gabumon'; /* Find all Animals not named G
 SELECT * FROM Animals WHERE weight_kg >= 10.4 AND weight_kg <=17.3; /* Find all Animals with a weight between 10.4kg and 17.3kg (including the Animals with the weights that equals precisely 10.4kg or 17.3kg)*/
 
 
+BEGIN;
+UPDATE Animals SET species='digimon' WHERE name LIKE '%mon';
+UPDATE Animals SET species='pokemon' WHERE species IS NULL;
+COMMIT;
+
 /*
 Now, take a deep breath and... Inside a transaction delete all records in the Animals table, then roll back the transaction.
 */
@@ -31,9 +36,10 @@ ROLLBACK;
 
 BEGIN;
 DELETE FROM Animals WHERE date_of_birth > '2022-01-01';
-SAVEPOINT born_befor_2022;
+SAVEPOINT born_before_2022;
 UPDATE Animals SET weight_kg = (weight_kg * -1);
-ROLLBACK TO born_befor_2022;
+ROLLBACK TO born_before_2022;
+UPDATE Animals SET weight_kg = (weight_kg * -1) WHERE weight_kg < 0;
 SELECT  * FROM Animals; /* Verify data state */
 COMMIT;
 
@@ -47,7 +53,7 @@ SELECT COUNT(*)  FROM Animals WHERE escape_attempts > 0;
 SELECT AVG(weight_kg) FROM Animals; 
 
  /* Who escapes the most, neutered or not neutered Animals?*/
-SELECT MAX(escape_attempts) FROM Animals WHERE (neutered='1') OR (neutered ='0');
+SELECT MAX(escape_attempts) FROM Animals WHERE (neutered='t') OR (neutered ='f');
 
 /* What is the minimum and maximum weight of each type of animal?*/
 SELECT species,MIN(weight_kg), MAX(weight_kg) FROM Animals GROUP BY species; 
