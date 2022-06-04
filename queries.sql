@@ -9,7 +9,12 @@ SELECT * FROM Animals WHERE neutered = 't'; /* Find all Animals that are neutere
 SELECT * FROM Animals WHERE  NOT name='Gabumon'; /* Find all Animals not named Gabumon.*/
 SELECT * FROM Animals WHERE weight_kg >= 10.4 AND weight_kg <=17.3; /* Find all Animals with a weight between 10.4kg and 17.3kg (including the Animals with the weights that equals precisely 10.4kg or 17.3kg)*/
 
-
+BEGIN; -- start transaction
+UPDATE Animals
+SET species = 'unspecified'; -- make change
+SELECT species from animals; -- verify that change was made
+ROLLBACK;
+SELECT species from animals; -- verify that change went back to the previous state; 
 
 
 BEGIN;
