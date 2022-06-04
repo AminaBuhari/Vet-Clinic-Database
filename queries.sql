@@ -101,10 +101,10 @@ SELECT MAX(COUNT) FROM (SELECT COUNT (*) FROM animals INNER JOIN owners ON owner
 SELECT owner_id, COUNT(*) FROM (SELECT * FROM animals INNER JOIN owners ON owner_id = owners.id) as animalsAndowners GROUP BY owner_id ORDER BY count asc;
 
 /*Last animal seen by William Thatcher*/
-SELECT vets.name, animalsAndVisits.animal_name, animalsAndVisits.date_of_visit FROM 
-    (SELECT id, name as animal_name, vet_id, date_of_visit FROM animals 
+SELECT vets.name, Visits.name, Visits.date_of_visit FROM 
+    (SELECT id, name as specie_name, vet_id, date_of_visit FROM animals 
     INNER JOIN visits
-    ON animals.id = animal_id) as animalsAndVisits
+    ON animals.id = animal_id) as Visits
     INNER JOIN vets
     ON vet_id = vets.id
     WHERE vet_id = 1
@@ -112,28 +112,26 @@ SELECT vets.name, animalsAndVisits.animal_name, animalsAndVisits.date_of_visit F
     LIMIT 1;
 
 /*number of animals seen by Stephanie Mendez*/
-SELECT name, COUNT(*) FROM
-    (SELECT id, name as animal_name, vet_id, date_of_visit FROM animals 
+SELECT vets.name, COUNT(*) FROM
+    (SELECT id, animals.name, vet_id FROM animals 
     INNER JOIN visits
-    ON animals.id = animal_id) as animalsAndVisits
+    ON animals.id = animal_id) as Visits
     INNER JOIN vets
     ON vet_id = vets.id
     WHERE vet_id = 3
-    GROUP BY name;
+    GROUP BY vets.name;
 
 /*All vets and their specialties*/
-SELECT vet_name, name as specialty FROM
-    (SELECT name as vet_name, id, specialization_id, vet_id FROM vets
-    LEFT JOIN specializations
-    ON vets.id = vet_id) as vetsAndSpecialties
+SELECT species.name, vets_name FROM (SELECT name as vets_name, id, specialization_id, vet_id FROM vets LEFT JOIN specializations
+    ON vets.id = vet_id) as SPECIALIZATION
     LEFT JOIN species
     ON species.id = specialization_id;
 
 /*All animals that visited Stephanie Mendez between April 1st and August 30th, 2020*/
-SELECT animalsAndVisits.animal_name, animalsAndVisits.date_of_visit FROM 
+SELECT Visited.animal_name, Visited.date_of_visit FROM 
     (SELECT id, name as animal_name, vet_id, date_of_visit FROM animals 
     INNER JOIN visits
-    ON animals.id = animal_id) as animalsAndVisits
+    ON animals.id = animal_id) as Visited
     INNER JOIN vets
     ON vet_id = vets.id
     WHERE vet_id = 3 AND date_of_visit BETWEEN '2020-04-01' and '2020-08-30';
