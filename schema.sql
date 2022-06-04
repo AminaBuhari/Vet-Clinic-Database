@@ -10,6 +10,32 @@ CREATE TABLE Animals (
     PRIMARY KEY(id)
 )
 
- ALter table Animals ADD species TEXT NOT NULL;
+ALter table Animals ADD species TEXT NOT NULL;
+
+CREATE TABLE owners (
+    id            SERIAL PRIMARY KEY,
+    full_name TEXT NOT NULL,
+    age INT NOT NULL; 
+)
+
+CREATE TABLE species (
+    id        SERIAL PRIMARY KEY,
+   name TEXT NOT NULL; 
+)
+
+-- Modify animals table:
+
+--     Remove column species
+ALTER TABLE Animals DROP species; 
+
+--     Add column species_id which is a foreign key referencing species table
+
+ALter table Animals ADD species_id INT NOT NULL;
+ALTER TABLE Animals ADD CONSTRAINT species_constraints FOREIGN KEY (species_id) REFERENCES species(id);
+
+--     Add column owner_id which is a foreign key referencing the owners table
+
+ALter table Animals ADD owner_id INT NOT NULL;
+ALTER TABLE Animals ADD CONSTRAINT owner_constraints FOREIGN KEY (owner_id) REFERENCES owners(id);
 
  
