@@ -101,7 +101,7 @@ SELECT MAX(COUNT) FROM (SELECT COUNT (*) FROM animals INNER JOIN owners ON owner
 SELECT owner_id, COUNT(*) FROM (SELECT * FROM animals INNER JOIN owners ON owner_id = owners.id) as animalsAndowners GROUP BY owner_id ORDER BY count asc;
 
 /*Last animal seen by William Thatcher*/
-SELECT vets.name, Visits.name, Visits.date_of_visit FROM 
+SELECT vets.name, Visits.specie_name, Visits.date_of_visit FROM 
     (SELECT id, name as specie_name, vet_id, date_of_visit FROM animals 
     INNER JOIN visits
     ON animals.id = animal_id) as Visits
@@ -138,62 +138,57 @@ SELECT Visited.animal_name, Visited.date_of_visit FROM
 
 
 /*What animal has the most vet visits*/
-SELECT name, count as number_of_visits FROM
-    (SELECT animal_id, COUNT(*) FROM visits GROUP BY animal_id) as countVisits
-    INNER JOIN animals
-    ON animals.id = animal_id
-    ORDER BY count desc
-    LIMIT 1;
-
+SELECT name, COUNT(*) FROM animals JOIN visits ON animal_id = animals.id GROUP BY name ORDER BY COUNT(*) DESC LIMIT 1;
     
 /*Maisy Smith's first visit*/
-SELECT vets.name, animalsAndVisits.animal_name, animalsAndVisits.date_of_visit FROM 
-    (SELECT id, name as animal_name, vet_id, date_of_visit FROM animals 
-    INNER JOIN visits
-    ON animals.id = animal_id) as animalsAndVisits
-    INNER JOIN vets
-    ON vet_id = vets.id
-    WHERE vet_id = 2
-    ORDER BY date_of_visit
-    LIMIT 1;
+SELECT vets.name, visits.date_of_visit, animals.name as animal_name FROM animals 
+JOIN visits  ON animals.id = animal_id 
+JOIN vets ON vet_id = vets.id  WHERE vet_id = 2
+ORDER BY date_of_visit
+LIMIT 1;
+
 /*Details for most recent visit of each animal*/
-SELECT animal_name, visit_date, date_of_birth, escape_attempts, neutered, weight_kg, name as vet_name, age, date_of_graduation FROM
+SELECT animal_name, visit_date, name as vet_name, age FROM
     (SELECT id, animal_name, visit_date, date_of_birth, escape_attempts, neutered, weight_kg, vet_id FROM
     (SELECT id, max as visit_date, animals.name as animal_name, date_of_birth, escape_attempts, neutered, weight_kg FROM
     (SELECT animal_id, MAX(date_of_visit) FROM animals
-    INNER JOIN visits
+    JOIN visits
     ON animals.id = animal_id
-    GROUP BY animal_id) as recentVisit
-    INNER JOIN animals
-    ON animals.id = animal_id) as animalInfo
-    INNER JOIN visits
-    ON visit_date = date_of_visit) as infoWithVetId
-    INNER JOIN vets
+    GROUP BY animal_id) as VISITS
+    JOIN animals
+    ON animals.id = animal_id) as ANIMAL
+     JOIN visits
+    ON visit_date = date_of_visit) as VETID
+     JOIN vets
     ON vet_id = vets.id;
+
 /*Number of non-specialized visits*/
-SELECT COUNT(*) as number_of_non_specialized_visits FROM
-    (SELECT species_id, animal_id, vet_id as my_vet_id, date_of_visit FROM
+SELECT COUNT(*) as non_specialized_visits FROM
+    (SELECT species_id, animal_id,  vet_id, date_of_visit FROM
     (SELECT species_id, animals.id as animals_id FROM animals
-    INNER JOIN species
-    ON species.id = species_id) as animal_species
-    INNER JOIN visits
-    ON visits.animal_id = animals_id) as all_visits
+    JOIN species
+    ON species.id = species_id) as Animalspec
+    JOIN visits
+    ON visits.animal_id = animals_id) as Visited
     LEFT JOIN specializations
-    ON specializations.vet_id = all_visits.my_vet_id
+    ON specializations.vet_id = Visited.vet_id
     WHERE specialization_id != species_id OR specialization_id IS NULL;
+
 /*What species Maisy Smith gets the most*/
 SELECT name, count FROM
     (SELECT species_id, COUNT(*) FROM
-    (SELECT species_id, animal_id, vet_id as my_vet_id, date_of_visit FROM
+    (SELECT species_id, animal_id, vet_id date_of_visit FROM
     (SELECT species_id, animals.id as animals_id FROM animals
-    INNER JOIN species
-    ON species.id = species_id) as animal_species
-    INNER JOIN visits
+    JOIN species
+    ON species.id = species_id) as SPECIES
+    JOIN visits
     ON visits.animal_id = animals_id
-    WHERE vet_id = 2) as maisys_visits
+    WHERE vet_id = 2) as Visited
     GROUP BY species_id
     ORDER BY species_id desc
-    LIMIT 1) as maximum
-    INNER JOIN species
+    LIMIT 1) as maxnumber
+    JOIN species
     ON species.id = species_id;
+    
+
     
