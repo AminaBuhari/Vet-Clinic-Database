@@ -62,3 +62,41 @@ SELECT species,MIN(weight_kg), MAX(weight_kg) FROM Animals GROUP BY species;
 
 /* What is the average number of escape attempts per animal type of those born between 1990 and 2000?*/
 SELECT species, AVG(escape_attempts) FROM Animals WHERE date_of_birth > '1990-01-01' AND date_of_birth < '2000-01-01' GROUP BY species;
+
+-- What animals belong to Melody Pond?
+SELECT owner_id, animals.name, owners.id, owners.full_name FROM animals INNER JOIN owners ON owner_id = owners.id WHERE owners.id = 4; 
+
+-- List of all animals that are pokemon (their type is Pokemon).
+SELECT species_id, animals.name, species.id, species.name FROM animals INNER JOIN species ON species_id = species.id WHERE species.id = 1;
+
+-- Answer
+species_id |    name    | id |  name
+------------+------------+----+---------
+          1 | Pikachu    |  1 | Pokemon
+          1 | Charmander |  1 | Pokemon
+          1 | Squirtle   |  1 | Pokemon
+          1 | Blossom    |  1 | Pokemon
+
+
+
+-- List all owners and their animals, remember to include those that don't own any animal.
+
+SELECT * FROM owners LEFT JOIN animals ON owners.id = animals.owner_id;
+
+-- List all owners and their animals, remember to include those that don't own any animal.
+
+SELECT species_id, COUNT (animals.species_id) FROM animals GROUP BY animals.species_id; 
+
+-- List all Digimon owned by Jennifer Orwell.
+SELECT * FROM (SELECT animals.name, animals.species_id, animals.owner_id, species.name FROM animals INNER JOIN species ON species_id = species.id) as animalsAndspecies INNER JOIN owners ON owner_id = owners.id WHERE owner_id = 2 AND species_id = 2;
+
+-- List all animals owned by Dean Winchester that haven't tried to escape.
+SELECT owner_id, animals.name, owners.id, owners.full_name FROM animals INNER JOIN owners ON owner_id = owners.id WHERE owners.id = 5 AND animals.escape_attempts = 0; 
+
+-- Who owns the most animals?
+SELECT MAX(COUNT) FROM (SELECT COUNT (*) FROM animals INNER JOIN owners ON owner_id = owners.id) AS animalsAndowners GROUP BY animals.owner_id ORDER BY count; 
+
+
+
+SELECT owner_id, COUNT(*) FROM (SELECT * FROM animals INNER JOIN owners ON owner_id = owners.id) as animalsAndowners GROUP BY owner_id ORDER BY count asc;
+    
