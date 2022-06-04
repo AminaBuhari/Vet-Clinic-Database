@@ -94,9 +94,5 @@ SELECT * FROM (SELECT animals.name, animals.species_id, animals.owner_id, specie
 SELECT owner_id, animals.name, owners.id, owners.full_name FROM animals INNER JOIN owners ON owner_id = owners.id WHERE owners.id = 5 AND animals.escape_attempts = 0; 
 
 -- Who owns the most animals?
-SELECT MAX(COUNT) FROM (SELECT COUNT (*) FROM animals INNER JOIN owners ON owner_id = owners.id) AS animalsAndowners GROUP BY animals.owner_id ORDER BY count; 
-
-
-
-SELECT owner_id, COUNT(*) FROM (SELECT * FROM animals INNER JOIN owners ON owner_id = owners.id) as animalsAndowners GROUP BY owner_id ORDER BY count asc;
+SELECT full_name, COUNT(*) FROM animals JOIN owners ON owner_id = owners.id GROUP BY full_name ORDER BY COUNT(*) DESC LIMIT 1;
     
