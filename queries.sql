@@ -189,6 +189,20 @@ SELECT name, count FROM
     LIMIT 1) as maxnumber
     JOIN species
     ON species.id = species_id;
-    
 
+    -- The following queries are taking too much time (1 sec = 1000ms can be considered as too much time for database query). Try them on your machine to confirm it: use explain analyze
     
+explain analyze SELECT COUNT(*) FROM visits where animal_id = 4;
+explain analyze SELECT * FROM visits where vet_id = 2;
+explain analyze SELECT * FROM owners where email = 'owner_18327@mail.com';
+
+-- Improve execution time of the other two queries.
+CREATE INDEX email_asc ON owners(email ASC);
+CREATE INDEX vet_id_asc ON visits(vet_id ASC);
+CREATE INDEX animal_id_asc ON visits(animal_id ASC);
+
+-- Rerun test
+
+explain analyze SELECT COUNT(*) FROM visits where animal_id = 4;
+explain analyze SELECT * FROM visits where vet_id = 2;
+explain analyze SELECT * FROM owners where email = 'owner_18327@mail.com';

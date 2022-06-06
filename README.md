@@ -1,5 +1,5 @@
 # Vet Clinic Database
-    The project uses a relational database to create data structure for a vet clinic.
+    The project uses a relational database to create data structure for a vet clinic.Some slow queries was optimized in the database by using indexing.
 
 
 ## Getting Started
@@ -16,7 +16,14 @@ This repository includes files with plain SQL that can be used to recreate a dat
 
 - GitHub: [@githubhandle](https://github.com/AminaBuhari)
 - Twitter: [@twitterhandle](https://twitter.com/AminaBuhari)
-- LinkedIn: [LinkedIn](https://www.linkedin.comamina-buhari/)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/amina-buhari/)
+
+👤 **Author1**
+
+- GitHub: [@githubhandle](https://github.com/TesheMaximillan)
+- Twitter: [@twitterhandle](https://twitter.com/TesheKura)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/teshome-kurabachew-aa8067180/)
+
 
 
 ## 🤝 Contributing

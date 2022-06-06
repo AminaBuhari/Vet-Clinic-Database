@@ -15,7 +15,7 @@ ALter table Animals ADD species TEXT NOT NULL;
 CREATE TABLE owners (
     id            SERIAL PRIMARY KEY,
     full_name TEXT NOT NULL;
-    age INT NOT NULL; 
+    age INT NOT NULL;
 )
 
 CREATE TABLE species (
@@ -66,3 +66,9 @@ CREATE TABLE visits (
     animal_id INT,
     date_of_visit DATE
 );
+
+-- Drop constrait on visit table
+ALTER TABLE owners ALTER age DROP NOT NULL;
+
+-- Add an email column to your owners table
+ALTER TABLE owners ADD COLUMN email VARCHAR(120);
