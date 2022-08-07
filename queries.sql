@@ -9,7 +9,6 @@ SELECT * FROM Animals WHERE neutered = 't'; /* Find all Animals that are neutere
 SELECT * FROM Animals WHERE  NOT name='Gabumon'; /* Find all Animals not named Gabumon.*/
 SELECT * FROM Animals WHERE weight_kg >= 10.4 AND weight_kg <=17.3; /* Find all Animals with a weight between 10.4kg and 17.3kg (including the Animals with the weights that equals precisely 10.4kg or 17.3kg)*/
 
-
 BEGIN; -- start transaction
 UPDATE Animals
 SET species = 'unspecified'; -- make change
@@ -100,6 +99,9 @@ SELECT * FROM (SELECT animals.name, animals.species_id, animals.owner_id, specie
 SELECT owner_id, animals.name, owners.id, owners.full_name FROM animals INNER JOIN owners ON owner_id = owners.id WHERE owners.id = 5 AND animals.escape_attempts = 0; 
 
 -- Who owns the most animals?
+
+SELECT full_name, COUNT(*) FROM animals JOIN owners ON owner_id = owners.id GROUP BY full_name ORDER BY COUNT(*) DESC LIMIT 1;
+
 SELECT MAX(COUNT) FROM (SELECT COUNT (*) FROM animals INNER JOIN owners ON owner_id = owners.id) AS animalsAndowners GROUP BY animals.owner_id ORDER BY count; 
 
 
